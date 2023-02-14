@@ -1,0 +1,40 @@
+<%- include('includes/head') %>
+<%- include('includes/nav') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2"></div>
+
+    <div class="col-lg-8 my-3">
+      <h1 class="text-center">Nota</h1>
+      <p class="text-center lead">Crie ou edite seu nota abaixo.</p>
+
+      <%- include('includes/messages') %>
+
+      <% if(nota._id) { %>
+      <form action="/nota/edit/<%= nota._id %>" method="POST">
+      <% } else { %>
+      <form action="/nota/register" method="POST">
+      <% } %>
+        <input type="hidden" name="_csrf" value=<%= csrfToken %>>
+        <div class="form-group">
+          <label>Titulo</label>
+          <input value="<%= nota.titulo %>" type="text" class="form-control" name="titulo">
+        </div>
+        <div class="form-group">
+          <label>Conteudo</label>
+          <input value="<%= nota.conteudo %>" type="text" class="form-control" name="conteudo">
+        </div>
+        
+        
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </form>
+
+
+    </div>
+    
+    <div class="col-lg-2"></div>
+  </div>
+</div>
+
+<%- include('includes/footer') %>
