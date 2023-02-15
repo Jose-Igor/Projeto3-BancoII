@@ -1,4 +1,12 @@
 const Nota = require('../models/NotaModel');
+var neo4j = require('neo4j-driver');
+require('dotenv').config();
+
+const uri = process.env.NEO4J_URI;
+const username = process.env.NEO4J_USERNAME;
+const password = process.env.NEO4J_PASSWORD;
+
+const driver = neo4j.driver(uri, neo4j.auth.basic(username, password));
 
 exports.index = (req, res) => {
   res.render('nota', {
@@ -8,7 +16,14 @@ exports.index = (req, res) => {
 
 exports.register = async(req, res) => {
   try {
-    const nota = new Nota(req.body);
+    console.log(req.session.user)
+    const emailAutor = req.session.user.email;
+    const tituloDaNota = req.body.titulo;
+    const nota = new Nota({
+      ...req.body,
+      autor: req.session.user.email, 
+    });
+    console.log(nota);
     await nota.register();
 
     if(nota.errors.length > 0) {
@@ -16,6 +31,20 @@ exports.register = async(req, res) => {
       req.session.save(() => res.redirect('back'));
       return;
     }
+    
+    
+    
+    const session = driver.session();
+
+    const result = await session.run(
+     'MATCH (user:Usuario {email: $email}) ' +
+     'CREATE (nota:Nota {titulo: $titulo})<-[:PUBLICOU]-(user) ' +
+     'RETURN nota',
+     { email: emailAutor, titulo: tituloDaNota }
+    );
+
+    session.close();
+
 
     req.flash('success', 'Nota registrado com sucesso.');
     req.session.save(() => res.redirect(`/nota/index/${nota.nota._id}`));

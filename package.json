@@ -1,10 +1,9 @@
 {
-  "name": "aula17",
+  "name": "proj3",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
     "start": "nodemon server.js --ignore public --ignore frontend",
     "dev": "webpack -w"
   },
@@ -23,9 +22,9 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "mongoose": "^5.13.3",
+    "neo4j-driver": "^5.5.0",
     "regenerator-runtime": "^0.13.9",
     "style-loader": "^3.2.1",
-    "supertest": "^6.3.3",
     "validator": "^13.6.0",
     "zxcvbn": "^4.4.2"
   },
@@ -34,7 +33,6 @@
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.8",
     "babel-loader": "^8.2.2",
-    "jest": "^29.4.2",
     "nodemon": "^2.0.12",
     "webpack": "^5.46.0",
     "webpack-cli": "^4.7.2"

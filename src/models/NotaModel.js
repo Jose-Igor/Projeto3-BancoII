@@ -5,6 +5,7 @@ const NotaSchema = new mongoose.Schema({
   titulo: { type: String, required: true },
   conteudo: { type: String, required: false, default: '' },
   criadoEm: { type: Date, default: Date.now },
+  autor: { type: String},
 });
 
 const NotaModel = mongoose.model('Nota', NotaSchema);

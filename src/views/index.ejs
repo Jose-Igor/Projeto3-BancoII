@@ -7,7 +7,7 @@
 
     <div class="col-lg-8 my-3">
       <h1 class="text-center">Agenda</h1>
-      <p class="text-center lead">Seus notas estão abaixo</p>
+      <p class="text-center lead">Suas notas estão abaixo</p>
 
       <%- include('includes/messages') %>
 
@@ -15,10 +15,11 @@
       <div class="responsive-table">
         <table class="table my-3">
           <% notas.forEach(nota => { %>
-          <tr>
+            <tr>
             <td><%= nota.titulo %></td>
             <td><%= nota.conteudo %></td>
             <td><%= nota.criadoEm %></td>
+            <td><%= nota.autor %></td>
             <td><a href="/nota/index/<%= nota._id %>">Editar</a></td>
             <td><a class="text-danger" href="/nota/delete/<%= nota._id %>">Excluir</a></td>
           </tr>
