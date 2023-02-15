@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+var neo4j = require('neo4j-driver');
+require('dotenv').config();
+
+const uri = process.env.NEO4J_URI;
+const username = process.env.NEO4J_USERNAME;
+const password = process.env.NEO4J_PASSWORD;
+
+const driver = neo4j.driver(uri, neo4j.auth.basic(username, password));
 
 const NotaSchema = new mongoose.Schema({
   titulo: { type: String, required: true },
@@ -64,6 +72,18 @@ Nota.buscaNotas = async function() {
 
 Nota.delete = async function(id) {
   if(typeof id !== 'string') return;
+  const session = driver.session();
+  try {
+    await session.run(
+      'MATCH (u:Usuario)-[p:PUBLICOU]->(n:Nota) ' +
+      'WHERE n.id = $id ' +
+      'DELETE p, n',
+      { id }
+    );
+  } finally {
+    session.close();
+  }
+
   const nota = await NotaModel.findOneAndDelete({_id: id});
   return nota;
 };
